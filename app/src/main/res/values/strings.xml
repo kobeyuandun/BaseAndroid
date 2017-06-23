@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">baseandroid</string>
+
+    <!-- version -->
+    <string name="version_newversion">发现新版本</string>
+    <string name="version_no_new_version">已经是最新版本</string>
+
+    <!-- common -->
+    <string name="common_exit_tips">再按一次退出应用程序</string>
+    <string name="common_network_weak_try">网络不佳，请稍候再试</string>
+    <string name="common_server_error">出错了，请稍候再试</string>
+</resources>
