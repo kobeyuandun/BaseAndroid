@@ -5,30 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center_horizontal">
 
-    <TextView
+    <Button
+        android:layout_marginTop="50dp"
         android:id="@+id/test_id1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="获取服务器时间"/>
 
-    <TextView
+    <Button
         android:id="@+id/test_id2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="登录"/>
 
-    <TextView
+    <Button
         android:id="@+id/test_id3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="获取用户信息"/>
 
-    <TextView
+    <Button
         android:id="@+id/test_id4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="本月上架商户数"/>
+
+    <TextView
+        android:id="@+id/test_id5"
+        android:layout_width="match_parent"
+        android:padding="8dp"
+        android:textSize="16sp"
+        android:textColor="#ff00ff"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

@@ -11,7 +11,6 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 public class WebDataUtils {
-
     /**
      * 检查返回code
      *
@@ -23,11 +22,11 @@ public class WebDataUtils {
         if (data == null) {
             return false;
         }
-        if (Constant.WEB_SUCCESS == data.getCode()) {
+        if (data.getStatus().startsWith("2")) {
             return true;
         } else {
             if (showToast) {
-                Toast.makeText(Global.getContext(), data.getMsg(), Toast.LENGTH_SHORT);
+                Toast.makeText(Global.getContext(), data.getMessage(), Toast.LENGTH_SHORT);
             }
         }
         return false;

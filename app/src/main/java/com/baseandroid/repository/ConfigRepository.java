@@ -1,5 +1,17 @@
 package com.baseandroid.repository;
 
+import com.baseandroid.repository.config.RetrofitManager;
+import com.baseandroid.repository.json.Data;
+import com.baseandroid.repository.json.Result;
+import com.baseandroid.repository.json.ServerTime;
+import com.baseandroid.repository.json.UserDate;
+import com.baseandroid.repository.json.UserTokenInfo;
+import com.baseandroid.repository.services.ConfigService;
+
+import java.util.Map;
+
+import io.reactivex.Observable;
+
 public class ConfigRepository {
 
     private volatile static ConfigRepository instance;
@@ -19,9 +31,28 @@ public class ConfigRepository {
         return instance;
     }
 
-    /*public Observable<Data<Definition>> getDefinition() {
-        com.yooopig.speed.repository.services.ConfigService service = RetrofitManager.getRxRetrofit2().create(com.yooopig.speed.repository.services.ConfigService.class);
-        return service.getDefinition();
-    }*/
+    public Observable<Data<ServerTime>> getServerTime() {
+        ConfigService service = RetrofitManager.getRxRetrofit()
+                .create(ConfigService.class);
+        return service.getServerTime();
+    }
+
+    public Observable<Data<UserTokenInfo>> loginApp(Map<String, String> loginMap) {
+        ConfigService service = RetrofitManager.getRxRetrofit()
+                .create(ConfigService.class);
+        return service.loginApp(loginMap);
+    }
+
+    public Observable<Data<UserDate>> getUserinfo() {
+        ConfigService service = RetrofitManager.getRxRetrofit()
+                .create(ConfigService.class);
+        return service.getUserinfo();
+    }
+
+    public Observable<Data<Result>> getNewGroundedCount(Map<String, String> newgrMap) {
+        ConfigService service = RetrofitManager.getRxRetrofit()
+                .create(ConfigService.class);
+        return service.getNewGroundedCount(newgrMap);
+    }
 
 }

@@ -58,6 +58,7 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
     // rename the apk with the version name
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -69,7 +70,7 @@ android {
 
     productFlavors {
         baseandroid {
-            applicationId "com.baseandroid"
+            applicationId "com.wallet.crm"
             resValue "string", "contentlog_authorities", "${applicationId}.fileprovider"
             resValue "string", "less_provider_file_authorities", "${applicationId}.fileprovider"
         }
@@ -77,15 +78,14 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile "com.android.support:multidex:1.0.1"
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.jayfeng:lesscode-update:1.0'
     compile 'com.jayfeng:lesscode-core:2.2'
     compile 'com.jayfeng:lesscode-ui:0.1.1'
-    compile 'com.jayfeng:lesscode-debug:2.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
@@ -96,6 +96,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.8.1'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.github.bumptech.glide:glide:3.8.0'
     compile 'com.jaeger.statusbarutil:library:1.4.0'
@@ -109,7 +110,7 @@ dependencies {
     compile 'com.mcxiaoke.gradle:packer-helper:1.0.8'
     compile 'com.umeng.analytics:analytics:6.1.0'
     compile 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor  'com.jakewharton:butterknife-compiler:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     compile 'com.facebook.stetho:stetho:1.5.0'
     compile 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'

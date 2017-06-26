@@ -4,31 +4,60 @@ import android.support.annotation.Keep;
 
 @Keep
 public class Data<T> {
-    private int code;
-    private String msg;
-    private T data;
 
-    public int getCode() {
-        return code;
+    private String message;
+    private String total_time;
+    private T result;
+    private String status;
+    private String srv_time;
+    private String info;
+
+
+    public String getMessage() {
+        return message;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getTotal_time() {
+        return total_time;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setTotal_time(String total_time) {
+        this.total_time = total_time;
     }
 
-    public T getData() {
-        return data;
+    public String getStatus() {
+        return status;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSrv_time() {
+        return srv_time;
+    }
+
+    public void setSrv_time(String srv_time) {
+        this.srv_time = srv_time;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
     }
 }
