@@ -1,5 +1,6 @@
 package com.baseandroid.repository.services;
 
+import com.baseandroid.repository.json.CheckUpdate;
 import com.baseandroid.repository.json.Data;
 import com.baseandroid.repository.json.Result;
 import com.baseandroid.repository.json.ServerTime;
@@ -29,5 +30,10 @@ public interface ConfigService {
     @FormUrlEncoded
     @POST("api/v1/sale/area/count_up_area")
     Observable<Data<Result>> getNewGroundedCount(@FieldMap Map<String, String> newgrMap);
+
+    @FormUrlEncoded
+    @POST("api/v1/basic/get_app_config")
+    Observable<Data<CheckUpdate>> checkUpdate(@FieldMap Map<String, String> updateMap);
+
 
 }

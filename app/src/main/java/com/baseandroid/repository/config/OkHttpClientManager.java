@@ -133,7 +133,9 @@ public class OkHttpClientManager {
                 MediaType mediaType = response.body().contentType();
                 try {
                     String responseContent = response.body().string();
+                    Log.e("+++++","==responseContent===" + responseContent);
                     responseContent = EncryptUtil.decryptBase64(responseContent);
+                    Log.e("+++++","==EncryptUtil responseContent===" + responseContent);
                     return response.newBuilder()
                             .body(ResponseBody.create(mediaType, responseContent))
                             .build();

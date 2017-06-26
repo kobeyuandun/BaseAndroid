@@ -1,6 +1,7 @@
 package com.baseandroid.repository;
 
 import com.baseandroid.repository.config.RetrofitManager;
+import com.baseandroid.repository.json.CheckUpdate;
 import com.baseandroid.repository.json.Data;
 import com.baseandroid.repository.json.Result;
 import com.baseandroid.repository.json.ServerTime;
@@ -53,6 +54,12 @@ public class ConfigRepository {
         ConfigService service = RetrofitManager.getRxRetrofit()
                 .create(ConfigService.class);
         return service.getNewGroundedCount(newgrMap);
+    }
+
+    public Observable<Data<CheckUpdate>> checkUpdate(Map<String, String> updateMap) {
+        ConfigService service = RetrofitManager.getRxRetrofit()
+                .create(ConfigService.class);
+        return service.checkUpdate(updateMap);
     }
 
 }

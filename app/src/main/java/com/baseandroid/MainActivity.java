@@ -10,6 +10,7 @@ import com.baseandroid.base.BaseActivity;
 import com.baseandroid.config.Global;
 import com.baseandroid.config.WebDataUtils;
 import com.baseandroid.repository.ConfigRepository;
+import com.baseandroid.repository.json.CheckUpdate;
 import com.baseandroid.repository.json.Data;
 import com.baseandroid.repository.json.Result;
 import com.baseandroid.repository.json.ServerTime;
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-
+        checkUpdate();
     }
 
     @Override
@@ -215,6 +216,40 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onNext(@NonNull Data<Result> resultData) {
                         if (WebDataUtils.checkJsonCode(resultData, true)) {
                             test_id5.setText(resultData.getResult().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void checkUpdate() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("classcode", "ANDROID_CRM_VERSION");
+
+        ConfigRepository.getInstance()
+                .checkUpdate(hashMap)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(MainActivity.this.<Data<CheckUpdate>>bindToLifecycle())
+                .subscribe(new Observer<Data<CheckUpdate>>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Data<CheckUpdate> checkUpdateData) {
+                        if (WebDataUtils.checkJsonCode(checkUpdateData, true)) {
+                            test_id5.setText(checkUpdateData.getResult().toString());
                         }
                     }
 
