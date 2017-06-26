@@ -35,5 +35,10 @@ public interface ConfigService {
     @POST("api/v1/basic/get_app_config")
     Observable<Data<CheckUpdate>> checkUpdate(@FieldMap Map<String, String> updateMap);
 
+    @FormUrlEncoded
+    @POST("api/v1/sale/visit/add_visit")
+    Observable<Data> addVisit(@FieldMap Map<String, String> updateMap);
+
+
 
 }

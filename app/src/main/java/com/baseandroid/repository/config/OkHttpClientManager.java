@@ -108,9 +108,9 @@ public class OkHttpClientManager {
                     Log.e("+++++", "===formBody.value====" + formBody.value(i));
 
                     postString.append(postString.length() > 0 ? "&" : "")
-                            .append(formBody.name(i))
+                            .append(formBody.encodedName(i))
                             .append("=")
-                            .append(formBody.value(i) == null ? "" : formBody.value(i));
+                            .append(formBody.encodedValue(i) == null ? "" : formBody.encodedValue(i));
                 }
             }
             Log.e("+++++", "===queryString====" + queryString);

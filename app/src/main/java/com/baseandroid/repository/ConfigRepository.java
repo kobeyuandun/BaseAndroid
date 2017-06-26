@@ -62,4 +62,10 @@ public class ConfigRepository {
         return service.checkUpdate(updateMap);
     }
 
+    public Observable<Data> addVisit(Map<String, String> visitMap) {
+        ConfigService service = RetrofitManager.getRxRetrofit()
+                .create(ConfigService.class);
+        return service.addVisit(visitMap);
+    }
+
 }

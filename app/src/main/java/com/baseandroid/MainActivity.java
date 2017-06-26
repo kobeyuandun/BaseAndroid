@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void setupData(Bundle savedInstanceState) {
         checkUpdate();
+        addVisit();
     }
 
     @Override
@@ -248,6 +249,47 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                     @Override
                     public void onNext(@NonNull Data<CheckUpdate> checkUpdateData) {
+                        if (WebDataUtils.checkJsonCode(checkUpdateData, true)) {
+                            test_id5.setText(checkUpdateData.getResult().toString());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void addVisit() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("areaId", "50804");
+        hashMap.put("mobile", "13652365236");
+        hashMap.put("openorno", "2");
+        hashMap.put("type", "2");
+        hashMap.put("content", "2+2 ++  ++");
+        hashMap.put("merchantName", "徐家汇银行");
+        hashMap.put("vcpPosition", "中山南二路");
+        hashMap.put("visitAddress", "上海市中心");
+
+        ConfigRepository.getInstance()
+                .addVisit(hashMap)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(MainActivity.this.<Data>bindToLifecycle())
+                .subscribe(new Observer<Data>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Data checkUpdateData) {
                         if (WebDataUtils.checkJsonCode(checkUpdateData, true)) {
                             test_id5.setText(checkUpdateData.getResult().toString());
                         }
