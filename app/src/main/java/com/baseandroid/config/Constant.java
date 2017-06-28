@@ -22,4 +22,5 @@ public class Constant {
     */
     public static String PREFERENCE_KEY_USER_AC_TOKEN = "ac_token";
     public static String PREFERENCE_KEY_USER_TOKEN_INFO = "user_token_info";
+    public static String PREFERENCE_KEY_USER_JPUSH_ALIAS = "jpush_alias";
 }

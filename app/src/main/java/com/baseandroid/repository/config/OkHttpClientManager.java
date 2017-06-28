@@ -104,8 +104,8 @@ public class OkHttpClientManager {
             if (RequestMethod.supportBody(originalRequest.method())) {
                 FormBody formBody = (FormBody) originalRequest.body();
                 for (int i = 0; i < formBody.size(); i++) {
-                    Log.e("+++++", "===formBody.name====" + formBody.name(i));
-                    Log.e("+++++", "===formBody.value====" + formBody.value(i));
+                    Log.e("+++++", "===formBody.name====" + formBody.encodedName(i));
+                    Log.e("+++++", "===formBody.value====" + formBody.encodedValue(i));
 
                     postString.append(postString.length() > 0 ? "&" : "")
                             .append(formBody.encodedName(i))

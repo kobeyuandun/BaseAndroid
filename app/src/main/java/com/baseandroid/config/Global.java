@@ -11,6 +11,7 @@ public class Global {
     private static Context sContext;
     private static String sAccessToken;
     private static UserTokenInfo sUserTokenInfo;
+    private static String sJpushAlias;
 
     public static Context getContext() {
         return sContext;
@@ -22,8 +23,7 @@ public class Global {
 
     public static String getUserAcToken() {
         if (TextUtils.isEmpty(sAccessToken)) {
-            sAccessToken = SharedPreferenceLess.$get(Constant.PREFERENCE_KEY_USER_AC_TOKEN,
-                    "");
+            sAccessToken = SharedPreferenceLess.$get(Constant.PREFERENCE_KEY_USER_AC_TOKEN, "");
         }
         return sAccessToken;
     }
@@ -45,4 +45,15 @@ public class Global {
         Global.sUserTokenInfo = usertokeninfo;
     }
 
+    public static String getsJpushAlias() {
+        if (TextUtils.isEmpty(sJpushAlias)) {
+            sJpushAlias = SharedPreferenceLess.$get(Constant.PREFERENCE_KEY_USER_JPUSH_ALIAS, "");
+        }
+        return sJpushAlias;
+    }
+
+    public static void setsJpushAlias(String sJpushAlias) {
+        SharedPreferenceLess.$put(Constant.PREFERENCE_KEY_USER_JPUSH_ALIAS, sJpushAlias);
+        Global.sJpushAlias = sJpushAlias;
+    }
 }

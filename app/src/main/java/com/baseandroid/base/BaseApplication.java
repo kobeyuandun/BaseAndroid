@@ -5,12 +5,15 @@ import android.content.Context;
 import android.os.StrictMode;
 
 import com.baseandroid.BuildConfig;
+import com.baseandroid.config.BizUtils;
 import com.baseandroid.config.Global;
 import com.facebook.stetho.Stetho;
 import com.jayfeng.lesscode.core.$;
 import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import cn.jpush.android.api.JPushInterface;
 
 public class BaseApplication extends Application{
 
@@ -22,12 +25,12 @@ public class BaseApplication extends Application{
         super.onCreate();
 
         Global.setContext(this);
-        $.getInstance().context(this)
-                .log(BuildConfig.DEBUG, "BaseAndroid")
-                .build();
-        Hawk.init(this).build();
 
-        // Bugly.init(this, "cafaaf5a96", true);
+        $.getInstance().context(this);
+
+        Hawk.init(this).build();
+        JPushInterface.init(this);
+        BizUtils.buglyInit();
 
         if (BuildConfig.DEBUG) {
             mRefWatcher = LeakCanary.install(this);

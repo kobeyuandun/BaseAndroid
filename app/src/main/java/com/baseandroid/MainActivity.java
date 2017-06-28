@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.baseandroid.base.BaseActivity;
 import com.baseandroid.config.Global;
 import com.baseandroid.config.WebDataUtils;
+import com.baseandroid.jpush.JPushBizutils;
 import com.baseandroid.repository.ConfigRepository;
 import com.baseandroid.repository.json.CheckUpdate;
 import com.baseandroid.repository.json.Data;
@@ -68,6 +69,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.test_id1:
                 getServerTime();
+
+                String str = null;
+                int length = str.length();
+
                 break;
 
             case R.id.test_id2:
@@ -146,6 +151,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                     .getUser()
                                     .getMobile());
                             test_id5.setText(userInfo.toString());
+
+                            JPushBizutils.initJPush();
                         }
                     }
 
@@ -272,7 +279,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         hashMap.put("mobile", "13652365236");
         hashMap.put("openorno", "2");
         hashMap.put("type", "2");
-        hashMap.put("content", "2+2 ++  ++");
+        hashMap.put("content", "+2    2+");
         hashMap.put("merchantName", "徐家汇银行");
         hashMap.put("vcpPosition", "中山南二路");
         hashMap.put("visitAddress", "上海市中心");
