@@ -6,16 +6,16 @@ import android.util.Log;
 
 import com.baseandroid.BuildConfig;
 import com.baseandroid.config.Global;
-import com.baseandroid.repository.config.cookie.PersistentCookieStore;
 import com.baseandroid.utils.EncryptUtil;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.qianbaocard.coresdk.SignUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
@@ -24,7 +24,6 @@ import okhttp3.Cache;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
-import okhttp3.JavaNetCookieJar;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -51,7 +50,8 @@ public class OkHttpClientManager {
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor();
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        CookieHandler cookieHandler = new CookieManager(new PersistentCookieStore(Global.getContext()), CookiePolicy.ACCEPT_ALL);
+        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(Global
+                .getContext()));
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder().hostnameVerifier(new HostnameVerifier() {
             @Override
@@ -62,7 +62,7 @@ public class OkHttpClientManager {
                 .addInterceptor(headerInterceptor)
                 .addInterceptor(logInterceptor)
                 .addNetworkInterceptor(new StethoInterceptor())
-                .cookieJar(new JavaNetCookieJar(cookieHandler))
+                .cookieJar(cookieJar)
                 .cache(getOkHttpCache())
                 .build();
         return okHttpClient;
@@ -133,9 +133,9 @@ public class OkHttpClientManager {
                 MediaType mediaType = response.body().contentType();
                 try {
                     String responseContent = response.body().string();
-                    Log.e("+++++","==responseContent===" + responseContent);
+                    Log.e("+++++", "==responseContent===" + responseContent);
                     responseContent = EncryptUtil.decryptBase64(responseContent);
-                    Log.e("+++++","==EncryptUtil responseContent===" + responseContent);
+                    Log.e("+++++", "==EncryptUtil responseContent===" + responseContent);
                     return response.newBuilder()
                             .body(ResponseBody.create(mediaType, responseContent))
                             .build();

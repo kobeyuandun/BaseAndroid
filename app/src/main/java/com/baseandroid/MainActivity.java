@@ -69,10 +69,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.test_id1:
                 getServerTime();
-
-                String str = null;
-                int length = str.length();
-
                 break;
 
             case R.id.test_id2:
@@ -145,13 +141,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onNext(@NonNull Data<UserTokenInfo> userTokenInfoData) {
                         if (WebDataUtils.checkJsonCode(userTokenInfoData, true)) {
                             UserTokenInfo userInfo = userTokenInfoData.getResult();
+                            userInfo.getUser().setMobile("49a52de65c23aa57251dd3701b29e54e");
                             Global.setUserInfo(userInfo);
                             Log.e("+++++++++++", "=====UserTokenInfo token===" + userInfo.getAc_token());
                             Log.e("+++++++++++", "=====UserTokenInfo mobile===" + userInfo
                                     .getUser()
                                     .getMobile());
                             test_id5.setText(userInfo.toString());
-
                             JPushBizutils.initJPush();
                         }
                     }

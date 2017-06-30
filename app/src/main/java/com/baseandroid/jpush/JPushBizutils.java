@@ -9,6 +9,7 @@ import com.baseandroid.BuildConfig;
 import com.baseandroid.config.Global;
 import com.jayfeng.lesscode.core.NetworkLess;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
@@ -37,7 +38,9 @@ public class JPushBizutils {
                     switch (msg.what) {
                         case MSG_SET_ALIAS_AND_TAGS:
                             resumeJPush((String) msg.obj);
-                            JPushInterface.setAliasAndTags(Global.getContext(), (String) msg.obj, null, mAliasCallback);
+                            Set<String> tagset = new HashSet<>();
+                            tagset.add("Develop");
+                            JPushInterface.setAliasAndTags(Global.getContext(), (String) msg.obj, tagset, mAliasCallback);
                             break;
                         default:
                             break;
