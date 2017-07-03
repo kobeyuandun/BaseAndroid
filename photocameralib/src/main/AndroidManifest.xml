@@ -1,0 +1,46 @@
+<manifest package="com.android.photocameralib"
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <activity
+            android:name=".media.SelectImageActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="选择图片"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.App.Theme.NoTitle"/>
+        <activity
+            android:name=".media.ImageGalleryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="图片预览"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Dialog.NoTitle.Translucent"/>
+        <activity
+            android:name=".media.crop.CropActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="图片裁剪"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Dialog.NoTitle.Translucent"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="@string/image_photo_provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/oschina_paths"
+                tools:replace="android:resource"/>
+        </provider>
+
+    </application>
+
+</manifest>

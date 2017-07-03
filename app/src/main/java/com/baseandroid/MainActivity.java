@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.photocameralib.media.ImageGalleryActivity;
+import com.android.photocameralib.media.config.SelectOptions;
 import com.baseandroid.base.BaseActivity;
 import com.baseandroid.config.Global;
 import com.baseandroid.config.WebDataUtils;
@@ -17,6 +19,7 @@ import com.baseandroid.repository.json.Result;
 import com.baseandroid.repository.json.ServerTime;
 import com.baseandroid.repository.json.UserDate;
 import com.baseandroid.repository.json.UserTokenInfo;
+import com.jayfeng.lesscode.core.DisplayLess;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,6 +46,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.test_id5)
     TextView test_id5;
 
+    @BindView(R.id.test_id6)
+    Button test_id6;
+    @BindView(R.id.test_id7)
+    Button test_id7;
+    @BindView(R.id.test_id8)
+    Button test_id8;
+
 
     @Override
     protected int getLayoutId() {
@@ -55,6 +65,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         test_id2.setOnClickListener(this);
         test_id3.setOnClickListener(this);
         test_id4.setOnClickListener(this);
+        test_id6.setOnClickListener(this);
+        test_id7.setOnClickListener(this);
+        test_id8.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +94,41 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.test_id4:
                 getNewGroundedCount();
+                break;
+
+            case R.id.test_id6:
+                SelectImageCustomActivit.show(MainActivity.this, new SelectOptions.Builder()
+                        .setHasCam(true)
+                        .setSelectCount(9)
+                        .setCallback(new SelectOptions.Callback() {
+                            @Override
+                            public void doSelected(String[] images) {
+                                for (String imgpath : images) {
+                                    Log.e("++++++++", "SelectImageActivity imgpath = " + imgpath);
+                                }
+                            }
+                        })
+                        .build());
+                break;
+
+            case R.id.test_id7:
+                ImageGalleryActivity.show(MainActivity.this, new String[]{"http://c.hiphotos.baidu.com/zhidao/pic/item/b64543a98226cffc3cef5decbe014a90f703eaa3.jpg", "http://img0.imgtn.bdimg.com/it/u=3164822311,573063053&fm=26&gp=0.jpg"}, 0, true);
+                break;
+
+            case R.id.test_id8:
+                SelectImageCustomActivit.show(MainActivity.this, new SelectOptions.Builder()
+                        .setHasCam(true)
+                        .setSelectCount(1)
+                        .setCrop(DisplayLess.$dp2px(256), DisplayLess.$dp2px(256))
+                        .setCallback(new SelectOptions.Callback() {
+                            @Override
+                            public void doSelected(String[] images) {
+                                for (String imgpath : images) {
+                                    Log.e("++++++++", " imgpath = " + imgpath);
+                                }
+                            }
+                        })
+                        .build(), SelectImageCustomActivit.class);
                 break;
 
             default:
@@ -141,7 +189,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     public void onNext(@NonNull Data<UserTokenInfo> userTokenInfoData) {
                         if (WebDataUtils.checkJsonCode(userTokenInfoData, true)) {
                             UserTokenInfo userInfo = userTokenInfoData.getResult();
-                            userInfo.getUser().setMobile("49a52de65c23aa57251dd3701b29e54e");
+                            userInfo.getUser()
+                                    .setMobile("49a52de65c23aa57251dd3701b29e54e");
                             Global.setUserInfo(userInfo);
                             Log.e("+++++++++++", "=====UserTokenInfo token===" + userInfo.getAc_token());
                             Log.e("+++++++++++", "=====UserTokenInfo mobile===" + userInfo
