@@ -1,5 +1,6 @@
 package com.baseandroid;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.baseandroid.base.BaseActivity;
@@ -35,14 +36,13 @@ public class RecycleTestActivity extends BaseActivity {
                 }, 2000);
             }
         });
+        ptr_fresh_layout_id.setBackgroundColor(Color.RED);
         //默认
         //ptr_fresh_layout_id.setLastUpdateTimeRelateObject(this);
         //自定义
         CustomPtrHeader customPtrHeader = new CustomPtrHeader(RecycleTestActivity.this);
         ptr_fresh_layout_id.setHeaderView(customPtrHeader);
         ptr_fresh_layout_id.addPtrUIHandler(customPtrHeader);
-        String str = null;
-        int length = str.length();
     }
 
     @Override
