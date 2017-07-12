@@ -30,6 +30,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".RecycleTestActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
+
         <!-- JPush-->
         <receiver
             android:name=".jpush.JPushReceiver"

@@ -40,7 +40,7 @@ public class JPushBizutils {
                             resumeJPush((String) msg.obj);
                             Set<String> tagset = new HashSet<>();
                             tagset.add("Develop");
-                            JPushInterface.setAliasAndTags(Global.getContext(), (String) msg.obj, tagset, mAliasCallback);
+                            JPushInterface.setAliasAndTags(Global.getContext(), "", tagset, mAliasCallback);
                             break;
                         default:
                             break;
@@ -77,6 +77,7 @@ public class JPushBizutils {
             String logs;
             switch (code) {
                 case 0:
+                    Log.e("++++++++", "alias = " + alias);
                     logs = "Set tag and alias success";
                     mHandler.removeCallbacks(null);
                     mHandlerThread.getLooper().quit();

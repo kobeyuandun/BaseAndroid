@@ -1,6 +1,8 @@
 package com.baseandroid;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -16,6 +18,13 @@ public class SelectImageCustomActivit extends SelectImageActivity {
         viewGroup.setBackgroundColor(Color.RED);
         Button button = (Button) relativeLayout.findViewById(R.id.btn_title_select);
         button.setTextColor(Color.BLUE);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectImageCustomActivit.this, RecycleTestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

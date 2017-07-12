@@ -72,8 +72,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
-        checkUpdate();
-        addVisit();
+        //checkUpdate();
+        //addVisit();
     }
 
     @Override
@@ -94,6 +94,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
             case R.id.test_id4:
                 getNewGroundedCount();
+                //accessNextPage(RecycleTestActivity.class);
                 break;
 
             case R.id.test_id6:

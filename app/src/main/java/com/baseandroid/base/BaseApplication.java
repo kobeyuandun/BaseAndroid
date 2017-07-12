@@ -3,6 +3,7 @@ package com.baseandroid.base;
 import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 
 import com.baseandroid.BuildConfig;
 import com.baseandroid.config.BizUtils;
@@ -13,9 +14,7 @@ import com.orhanobut.hawk.Hawk;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
-import cn.jpush.android.api.JPushInterface;
-
-public class BaseApplication extends Application{
+public class BaseApplication extends Application {
 
     private static RefWatcher mRefWatcher;
     private static BaseAppManager mAppManager;
@@ -29,7 +28,6 @@ public class BaseApplication extends Application{
         $.getInstance().context(this);
 
         Hawk.init(this).build();
-        JPushInterface.init(this);
         BizUtils.buglyInit();
 
         if (BuildConfig.DEBUG) {
@@ -65,6 +63,13 @@ public class BaseApplication extends Application{
             }
         }
         return mAppManager;
+    }
+
+    @Override
+    public void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
     }
 
     public static void exitApp() {
