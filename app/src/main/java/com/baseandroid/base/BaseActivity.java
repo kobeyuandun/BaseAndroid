@@ -83,7 +83,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
-                if (true/*this instanceof HomeMainActivity*/) {
+                if (false/*this instanceof HomeMainActivity*/) {
                     return mDoubleClickExitHelper.onKeyDown(keyCode, event);
                 }
                 break;
