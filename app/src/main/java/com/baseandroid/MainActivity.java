@@ -93,8 +93,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.test_id4:
-                getNewGroundedCount();
-                //accessNextPage(RecycleTestActivity.class);
+                accessNextPage(PullToRefreshUseActivity.class);
                 break;
 
             case R.id.test_id6:

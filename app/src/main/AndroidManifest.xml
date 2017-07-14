@@ -31,7 +31,7 @@
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".RecycleTestActivity"
+            android:name=".PullToRefreshUseActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"/>
 

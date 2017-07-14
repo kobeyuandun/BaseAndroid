@@ -1,6 +1,5 @@
 package com.baseandroid;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +20,7 @@ public class SelectImageCustomActivit extends SelectImageActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SelectImageCustomActivit.this, RecycleTestActivity.class);
-                startActivity(intent);
+
             }
         });
     }
