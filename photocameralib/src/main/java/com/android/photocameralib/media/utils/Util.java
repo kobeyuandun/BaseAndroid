@@ -33,12 +33,11 @@ public class Util {
     }
 
     public static String getCameraPath() {
-        return Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/DCIM/Camera/";// filePath:/sdcard/
+        return Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera/";// filePath:/sdcard/
     }
 
     public static String getSaveImageFullName() {
-        return "IMG_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";// 照片命名
+        return "Qianbao_" + new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".png";// 照片命名
     }
 
     public static ArrayList<String> toArrayList(List<Image> images) {

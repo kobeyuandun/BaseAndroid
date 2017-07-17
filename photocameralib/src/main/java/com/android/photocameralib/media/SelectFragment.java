@@ -38,8 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SelectFragment extends BaseFragment
-        implements SelectImageContract.View, View.OnClickListener {
+public class SelectFragment extends BaseFragment implements SelectImageContract.View, View.OnClickListener {
 
     ImageView mBackView;
     RecyclerView mContentView;
@@ -47,13 +46,14 @@ public class SelectFragment extends BaseFragment
     ImageView mSelectFolderIcon;
     View mToolbar;
     Button mDoneView;
-    Button mPreviewView;
+    //    Button mPreviewView;
     FrameLayout mPreviewDoneView;
 
     private ImageFolderPopupWindow mFolderPopupWindow;
     private ImageFolderAdapter mImageFolderAdapter;
     private ImageAdapter mImageAdapter;
 
+    private List<Image> imageList = new ArrayList<>();
     private List<Image> mSelectedImage;
 
     private String mCamImageName;
@@ -82,36 +82,49 @@ public class SelectFragment extends BaseFragment
 
     @Override
     protected void setupView() {
-        mBackView = (ImageView) getView().findViewById(R.id.icon_back);
-        mBackView.setOnClickListener(this);
-        mContentView = (RecyclerView) getView().findViewById(R.id.rv_image);
-        mSelectFolderView = (Button) getView().findViewById(R.id.btn_title_select);
-        mSelectFolderView.setOnClickListener(this);
-        mSelectFolderIcon = (ImageView) getView().findViewById(R.id.iv_title_select);
+
         mToolbar = (View) getView().findViewById(R.id.toolbar);
+        mBackView = (ImageView) getView().findViewById(R.id.icon_back);
+        mSelectFolderView = (Button) getView().findViewById(R.id.btn_title_select);
+        mSelectFolderIcon = (ImageView) getView().findViewById(R.id.iv_title_select);
+
+        mContentView = (RecyclerView) getView().findViewById(R.id.rv_image);
         mDoneView = (Button) getView().findViewById(R.id.btn_done);
-        mDoneView.setOnClickListener(this);
-        mPreviewView = (Button) getView().findViewById(R.id.btn_preview);
-        mPreviewView.setOnClickListener(this);
+//        mPreviewView = (Button) getView().findViewById(R.id.btn_preview);
         mPreviewDoneView = (FrameLayout) getView().findViewById(R.id.lay_button);
 
         mContentView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         mContentView.addItemDecoration(new SpaceGridItemDecoration((int) Util.dipTopx(getActivity(), 1)));
-        mImageAdapter = new ImageAdapter(getActivity(), new ImageAdapter.OnClickListern() {
-            @Override
-            public void itemOnClickListern(int postion) {
-                onItemClick(postion);
-            }
-        });
+        mImageAdapter = new ImageAdapter(getActivity(), imageClickListener);
         mImageAdapter.setSingleSelect(mOption.getSelectCount() <= 1);
         mImageFolderAdapter = new ImageFolderAdapter(getActivity());
         mContentView.setAdapter(mImageAdapter);
         mContentView.setItemAnimator(null);
         mPreviewDoneView.setVisibility(mOption.getSelectCount() == 1 ? View.GONE : View.VISIBLE);
 
+        mBackView.setOnClickListener(this);
+        mSelectFolderView.setOnClickListener(this);
+//        mPreviewView.setOnClickListener(this);
+        mDoneView.setOnClickListener(this);
+
         this.mOperator.SetToolBarView((RelativeLayout) mToolbar);
         this.mOperator.SetButtonView(mPreviewDoneView);
     }
+
+    private ImageAdapter.OnClickListern imageClickListener = new ImageAdapter.OnClickListern() {
+
+        @Override
+        public void itemOnClickListener(int postion) {
+            onItemClick(postion);
+        }
+
+        @Override
+        public void itemLookOnClickListener(int postion) {
+            if (imageList.size() > 0) {
+                ImageGalleryActivity.show(getActivity(), Util.toArray(imageList), postion, false);
+            }
+        }
+    };
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
@@ -127,7 +140,6 @@ public class SelectFragment extends BaseFragment
                 }
             }
         }
-
         getLoaderManager().initLoader(0, null, mCursorLoader);
     }
 
@@ -164,6 +176,11 @@ public class SelectFragment extends BaseFragment
                         int id = data.getInt(data.getColumnIndexOrThrow(IMAGE_PROJECTION[3]));
                         String thumbPath = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[4]));
                         String bucket = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[5]));
+
+                        File imageFilePash = new File(path);
+                        if (!imageFilePash.exists()) {//不存在的图片不加载到相册
+                            continue;
+                        }
 
                         Image image = new Image();
                         image.setPath(path);
@@ -203,18 +220,15 @@ public class SelectFragment extends BaseFragment
                             ImageFolder f = imageFolders.get(imageFolders.indexOf(folder));
                             f.getImages().add(image);
                         }
-
                     } while (data.moveToNext());
                 }
 
                 addImagesToAdapter(images);
                 defaultFolder.getImages().addAll(images);
                 if (mOption.isHasCam()) {
-                    defaultFolder.setAlbumPath(images.size() > 1 ? images.get(1)
-                            .getPath() : null);
+                    defaultFolder.setAlbumPath(images.size() > 1 ? images.get(1).getPath() : null);
                 } else {
-                    defaultFolder.setAlbumPath(images.size() > 0 ? images.get(0)
-                            .getPath() : null);
+                    defaultFolder.setAlbumPath(images.size() > 0 ? images.get(0).getPath() : null);
                 }
                 mImageFolderAdapter.resetItem(imageFolders);
 
@@ -246,22 +260,23 @@ public class SelectFragment extends BaseFragment
     }
 
     private void addImagesToAdapter(ArrayList<Image> images) {
+        imageList.clear();
         mImageAdapter.clear();
         if (mOption.isHasCam()) {
-            Image cam = new Image();
-            mImageAdapter.addItem(cam);
+//            Image cam = new Image();
+//            mImageAdapter.addItem(cam);
         }
+        imageList.addAll(images);
         mImageAdapter.addAll(images);
     }
 
     private void handleSelectSizeChange(int size) {
         if (size > 0) {
-            mPreviewView.setEnabled(true);
+//            mPreviewView.setEnabled(true);
             mDoneView.setEnabled(true);
-            mDoneView.setText(String.format("%s(%s/%s)", getText(R.string.image_select_opt_done), size, mOption
-                    .getSelectCount()));
+            mDoneView.setText(String.format("%s(%s/%s)", getText(R.string.image_select_opt_done), size, mOption.getSelectCount()));
         } else {
-            mPreviewView.setEnabled(false);
+//            mPreviewView.setEnabled(false);
             mDoneView.setEnabled(false);
             mDoneView.setText(getText(R.string.image_select_opt_done));
         }
@@ -271,11 +286,13 @@ public class SelectFragment extends BaseFragment
     public void onClick(View v) {
         if (v == mBackView) {
             getActivity().finish();
-        } else if (v == mPreviewView) {
-            if (mSelectedImage.size() > 0) {
-                ImageGalleryActivity.show(getActivity(), Util.toArray(mSelectedImage), 0, false);
-            }
-        } else if (v == mSelectFolderView) {
+        }
+//        else if (v == mPreviewView) {
+//            if (mSelectedImage.size() > 0) {
+//                ImageGalleryActivity.show(getActivity(), Util.toArray(mSelectedImage), mSelectedImage.size(), false);
+//            }
+//        }
+        else if (v == mSelectFolderView) {
             showPopupFolderList();
         } else if (v == mDoneView) {
             onSelectComplete();
@@ -284,16 +301,17 @@ public class SelectFragment extends BaseFragment
 
     public void onItemClick(int position) {
         if (mOption.isHasCam()) {
-            if (position != 0) {
-                handleSelectChange(position);
-            } else {
-                if (mSelectedImage.size() < mOption.getSelectCount()) {
-                    mOperator.requestCamera();
-                } else {
-                    Toast.makeText(getActivity(), "最多只能选择 " + mOption.getSelectCount() + " 张图片", Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
+//            if (position != 0) {
+            handleSelectChange(position);
+//            }
+//            else {
+//                if (mSelectedImage.size() < mOption.getSelectCount()) {
+//                    mOperator.requestCamera();
+//                } else {
+//                    Toast.makeText(getActivity(), "最多只能选择 " + mOption.getSelectCount() + " 张图片", Toast.LENGTH_SHORT)
+//                            .show();
+//                }
+//            }
         } else {
             handleSelectChange(position);
         }
@@ -341,7 +359,20 @@ public class SelectFragment extends BaseFragment
                 mSelectedImage.clear();
                 CropActivity.show(this, mOption);
             } else {
-                mOption.getCallback().doSelected(Util.toArray(mSelectedImage));
+                List<Image> rs = new ArrayList<>();
+                for (Image i : mSelectedImage) {
+                    File f = new File(i.getPath());
+                    if (!f.exists()) {
+                        rs.add(i);
+                    }
+                }
+                if (rs.size() > 0) {
+                    Toast.makeText(getActivity(), "已为您过滤" + rs.size() + "张不存在或损坏的图片", Toast.LENGTH_LONG).show();
+                    mSelectedImage.removeAll(rs);
+                }
+                if (mSelectedImage.size() > 0) {
+                    mOption.getCallback().doSelected(Util.toArray(mSelectedImage));
+                }
                 getActivity().finish();
             }
         }
@@ -352,7 +383,7 @@ public class SelectFragment extends BaseFragment
      */
     @Override
     public void onOpenCameraSuccess() {
-        toOpenCamera();
+//        toOpenCamera();
     }
 
     @Override
@@ -430,9 +461,10 @@ public class SelectFragment extends BaseFragment
 
     /**
      * 拍照完成通知系统添加照片
+     *
      * @param requestCode requestCode
-     * @param resultCode resultCode
-     * @param data data
+     * @param resultCode  resultCode
+     * @param data        data
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -450,8 +482,7 @@ public class SelectFragment extends BaseFragment
                     if (data == null) {
                         return;
                     }
-                    mOption.getCallback()
-                            .doSelected(new String[]{data.getStringExtra("crop_path")});
+                    mOption.getCallback().doSelected(new String[]{data.getStringExtra("crop_path")});
                     getActivity().finish();
                     break;
             }

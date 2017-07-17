@@ -1,5 +1,6 @@
 package com.android.photocameralib.media.crop;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,12 +12,12 @@ import android.widget.TextView;
 import com.android.photocameralib.R;
 import com.android.photocameralib.media.base.BaseActivity;
 import com.android.photocameralib.media.config.SelectOptions;
+import com.android.photocameralib.media.utils.Util;
 import com.bumptech.glide.Glide;
 
 import java.io.FileOutputStream;
 
 import static com.android.photocameralib.R.id.tv_cancel;
-import static java.lang.System.load;
 
 public class CropActivity extends BaseActivity implements View.OnClickListener {
     private TextView mCropConfig;
@@ -28,6 +29,12 @@ public class CropActivity extends BaseActivity implements View.OnClickListener {
         Intent intent = new Intent(fragment.getActivity(), CropActivity.class);
         mOption = options;
         fragment.startActivityForResult(intent, 0x04);
+    }
+
+    public static void show(Activity activity, SelectOptions options) {
+        Intent intent = new Intent(activity, CropActivity.class);
+        mOption = options;
+        activity.startActivityForResult(intent, 0x04);
     }
 
     @Override
@@ -65,7 +72,7 @@ public class CropActivity extends BaseActivity implements View.OnClickListener {
             FileOutputStream os = null;
             try {
                 bitmap = mCropLayout.cropBitmap();
-                String path = getFilesDir() + "/crop.jpg";
+                String path = getFilesDir() + Util.getSaveImageFullName();
                 os = new FileOutputStream(path);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                 os.flush();

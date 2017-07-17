@@ -14,15 +14,13 @@ import com.android.photocameralib.R;
 import com.android.photocameralib.media.adapter.ImageFolderAdapter;
 import com.android.photocameralib.media.bean.ImageFolder;
 
-public class ImageFolderPopupWindow extends PopupWindow
-        implements View.OnAttachStateChangeListener {
+public class ImageFolderPopupWindow extends PopupWindow implements View.OnAttachStateChangeListener {
     private ImageFolderAdapter mAdapter;
     private RecyclerView mFolderView;
     private Callback mCallback;
 
     public ImageFolderPopupWindow(Context context, Callback callback) {
-        super(LayoutInflater.from(context)
-                .inflate(R.layout.popup_window_folder, null), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        super(LayoutInflater.from(context).inflate(R.layout.popup_window_folder, null), ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         mCallback = callback;
 

@@ -42,8 +42,7 @@ import java.util.concurrent.Future;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class ImageGalleryActivity extends BaseActivity
-        implements ViewPager.OnPageChangeListener {
+public class ImageGalleryActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     public static final String KEY_IMAGE = "images";
     public static final String KEY_POSITION = "position";
     public static final String KEY_NEED_SAVE = "save";
@@ -120,7 +119,9 @@ public class ImageGalleryActivity extends BaseActivity
         }
 
         int len = mImageSources.length;
-        if (mCurPosition < 0 || mCurPosition >= len) {
+        if (mCurPosition >= 0 || mCurPosition <= len) {
+//            mCurPosition = 0;
+        } else {
             mCurPosition = 0;
         }
 
@@ -226,8 +227,7 @@ public class ImageGalleryActivity extends BaseActivity
                             return;
                         }
                     }
-                    final File saveFile = new File(extDirFile, String.format("IMG_%s.%s", System
-                            .currentTimeMillis(), extension));
+                    final File saveFile = new File(extDirFile, String.format("IMG_%s.%s", System.currentTimeMillis(), extension));
                     final boolean isSuccess = Util.copyFile(sourceFile, saveFile);
                     callSaveStatus(isSuccess, saveFile);
                 } catch (Exception e) {
@@ -294,8 +294,7 @@ public class ImageGalleryActivity extends BaseActivity
         return mDisplayDimens;
     }
 
-    private class ViewPagerAdapter extends PagerAdapter
-            implements ImagePreviewView.OnReachBorderListener {
+    private class ViewPagerAdapter extends PagerAdapter implements ImagePreviewView.OnReachBorderListener {
 
         private View.OnClickListener mFinishClickListener;
 
@@ -311,8 +310,7 @@ public class ImageGalleryActivity extends BaseActivity
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View view = LayoutInflater.from(container.getContext())
-                    .inflate(R.layout.lay_gallery_page_item_contener, container, false);
+            View view = LayoutInflater.from(container.getContext()).inflate(R.layout.lay_gallery_page_item_contener, container, false);
             ImagePreviewView previewView = (ImagePreviewView) view.findViewById(R.id.iv_preview);
             previewView.setOnReachBorderListener(this);
             Loading loading = (Loading) view.findViewById(R.id.loading);

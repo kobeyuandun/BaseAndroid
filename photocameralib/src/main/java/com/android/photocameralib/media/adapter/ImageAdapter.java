@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.android.photocameralib.R;
 import com.android.photocameralib.media.bean.Image;
@@ -36,9 +37,9 @@ public class ImageAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == 0) {
-            return new CamViewHolder(mInflater.inflate(R.layout.item_list_cam, parent, false));
-        }
+//        if (viewType == 0) {
+//            return new CamViewHolder(mInflater.inflate(R.layout.item_list_cam, parent, false));
+//        }
 
         return new ImageViewHolder(mInflater.inflate(R.layout.item_list_image, parent, false));
     }
@@ -46,27 +47,31 @@ public class ImageAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         Image item = mItems.get(position);
-        if (item.getId() != 0) {
-            ImageViewHolder h = (ImageViewHolder) holder;
-            h.mCheckView.setSelected(item.isSelect());
-            h.mMaskView.setVisibility(item.isSelect() ? View.VISIBLE : View.GONE);
-            h.mGifMask.setVisibility(item.getPath()
-                    .toLowerCase()
-                    .endsWith("gif") ? View.VISIBLE : View.GONE);
-            Glide.with(mContext)
-                    .load(item.getPath())
-                    .asBitmap()
-                    .centerCrop()
-                    .error(R.drawable.ic_split_graph)
-                    .into(h.mImageView);
-            h.mCheckView.setVisibility(isSingleSelect ? View.GONE : View.VISIBLE);
-        }
+//        if (item.getId() != 0) {
+        ImageViewHolder h = (ImageViewHolder) holder;
+        h.mCheckView.setSelected(item.isSelect());
+        h.mMaskView.setVisibility(item.isSelect() ? View.VISIBLE : View.GONE);
+        h.mGifMask.setVisibility(item.getPath().toLowerCase().endsWith("gif") ? View.VISIBLE : View.GONE);
+        h.mCheckView.setVisibility(isSingleSelect ? View.GONE : View.VISIBLE);
 
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        Glide.with(mContext).load(item.getPath()).asBitmap().centerCrop().error(R.drawable.ic_split_graph).into(h.mImageView);
+        h.itemView.setTag(position);
+        h.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mOnClickListern.itemOnClickListern((Integer) v.getTag());
+                if (isSingleSelect) {
+                    mOnClickListern.itemOnClickListener((Integer) v.getTag());
+                } else {
+                    mOnClickListern.itemLookOnClickListener((Integer) v.getTag());
+                }
+            }
+        });
+//        }
+        h.selectCbRl.setTag(position);
+        h.selectCbRl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnClickListern.itemOnClickListener((Integer) v.getTag());
             }
         });
     }
@@ -78,11 +83,11 @@ public class ImageAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Image image = mItems.get(position);
-        if (image.getId() == 0) {
-            mItems.get(position);
-            return 0;
-        }
+//        Image image = mItems.get(position);
+//        if (image.getId() == 0) {
+//            mItems.get(position);
+//            return 0;
+//        }
         return 1;
     }
 
@@ -148,10 +153,12 @@ public class ImageAdapter extends RecyclerView.Adapter {
         ImageView mCheckView;
         ImageView mGifMask;
         View mMaskView;
+        RelativeLayout selectCbRl;
 
         ImageViewHolder(View itemView) {
             super(itemView);
             mImageView = (ImageView) itemView.findViewById(R.id.iv_image);
+            selectCbRl = (RelativeLayout) itemView.findViewById(R.id.select_cb_rl);
             mCheckView = (ImageView) itemView.findViewById(R.id.cb_selected);
             mMaskView = itemView.findViewById(R.id.lay_mask);
             mGifMask = (ImageView) itemView.findViewById(R.id.iv_is_gif);
@@ -159,6 +166,18 @@ public class ImageAdapter extends RecyclerView.Adapter {
     }
 
     public interface OnClickListern {
-        public void itemOnClickListern(int postion);
+        /**
+         * 选择图片
+         *
+         * @param postion
+         */
+        void itemOnClickListener(int postion);
+
+        /**
+         * 查看图片
+         *
+         * @param postion
+         */
+        void itemLookOnClickListener(int postion);
     }
 }

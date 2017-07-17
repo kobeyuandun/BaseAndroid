@@ -10,5 +10,7 @@
     <color name="black_alpha_240">#f0000000</color>
     <color name="white_alpha_16">#10ffffff</color>
     <color name="white_alpha_240">#f0ffffff</color>
+    <color name="c_C59D5F">#C59D5F</color>
+    <color name="c_b18d55">#b18d55</color>
 
 </resources>

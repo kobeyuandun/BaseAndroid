@@ -21,8 +21,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class SelectImageActivity extends BaseActivity
-        implements SelectImageContract.Operator {
+public class SelectImageActivity extends BaseActivity implements SelectImageContract.Operator {
 
     private static SelectOptions mOption;
     private SelectImageContract.View mView;
@@ -54,7 +53,7 @@ public class SelectImageActivity extends BaseActivity
 
     @Override
     public void requestExternalStorage() {
-        boolean isPermissionsGranted = new RxPermissions(SelectImageActivity.this).isGranted(Manifest.permission.CAMERA);
+        boolean isPermissionsGranted = new RxPermissions(SelectImageActivity.this).isGranted(Manifest.permission.READ_EXTERNAL_STORAGE);
         if (!isPermissionsGranted) {
             new RxPermissions(SelectImageActivity.this).request(Manifest.permission.READ_EXTERNAL_STORAGE)
                     .subscribe(new Observer<Boolean>() {
