@@ -12,6 +12,7 @@ import com.baseandroid.repository.services.ConfigService;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 
 public class ConfigRepository {
 
@@ -66,6 +67,24 @@ public class ConfigRepository {
         ConfigService service = RetrofitManager.getRxRetrofit()
                 .create(ConfigService.class);
         return service.addVisit(visitMap);
+    }
+
+    public Observable<String> testOcrIdcard(RequestBody body) {
+        ConfigService service = RetrofitManager.getRxRetrofitAli()
+                .create(ConfigService.class);
+        return service.testOcrIdcard(body);
+    }
+
+    public Observable<String> testDriverLicense(String url, RequestBody body) {
+        ConfigService service = RetrofitManager.getRxRetrofitAli()
+                .create(ConfigService.class);
+        return service.testDriverLicense(url, body);
+    }
+
+    public Observable<String> testShopSign(String url, RequestBody body) {
+        ConfigService service = RetrofitManager.getRxRetrofitAli()
+                .create(ConfigService.class);
+        return service.testShopSign(url, body);
     }
 
 }

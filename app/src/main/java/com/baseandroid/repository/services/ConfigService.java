@@ -10,11 +10,14 @@ import com.baseandroid.repository.json.UserTokenInfo;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 public interface ConfigService {
 
@@ -40,5 +43,14 @@ public interface ConfigService {
     Observable<Data> addVisit(@FieldMap Map<String, String> updateMap);
 
 
+    /*--------ali------------*/
+    @POST("rest/160601/ocr/ocr_idcard.json")
+    Observable<String> testOcrIdcard(@Body RequestBody body);
+
+    @POST
+    Observable<String> testDriverLicense(@Url String url,@Body RequestBody body);
+
+    @POST
+    Observable<String> testShopSign(@Url String url,@Body RequestBody body);
 
 }

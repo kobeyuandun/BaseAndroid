@@ -1,6 +1,7 @@
 package com.baseandroid;
 
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +20,20 @@ import com.baseandroid.repository.json.Result;
 import com.baseandroid.repository.json.ServerTime;
 import com.baseandroid.repository.json.UserDate;
 import com.baseandroid.repository.json.UserTokenInfo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jayfeng.lesscode.core.DisplayLess;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import io.reactivex.Observer;
@@ -31,6 +41,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -81,7 +93,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.test_id1:
-                getServerTime();
+                //getServerTime();
+                //gettestOcrIdcard();
+                //gettestDriverLicense();
+                gettestShopSign();
                 break;
 
             case R.id.test_id2:
@@ -345,6 +360,217 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         if (WebDataUtils.checkJsonCode(checkUpdateData, true)) {
                             test_id5.setText(checkUpdateData.getResult().toString());
                         }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json;" + "charset=utf-8");
+
+    private void gettestOcrIdcard() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+
+        Map<String, Object> idcardMap = new HashMap<>();
+        List<Object> objectList = new ArrayList<>();
+        Map<String, Object> inputs = new HashMap<>();
+
+        Map<String, Object> imageitem = new HashMap<>();
+        imageitem.put("dataType", 50);
+
+
+        // 对图像进行base64编码
+        String imgBase64 = "";
+        try {
+            File file = new File("/storage/emulated/0/tencent/MicroMsg/WeiXin/mmexport1500359837353.jpg");
+            byte[] content = new byte[(int) file.length()];
+            FileInputStream finputstream = new FileInputStream(file);
+            finputstream.read(content);
+            finputstream.close();
+            imgBase64 = new String(Base64.encode(content, Base64.DEFAULT));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        imageitem.put("dataValue", imgBase64);
+
+        inputs.put("image", imageitem);
+
+        Map<String, Object> configitem = new HashMap<>();
+        Map<String, Object> itemsub = new HashMap<>();
+        itemsub.put("side", "face");
+        String configstr = gson.toJson(itemsub, type);
+        configitem.put("dataType", 50);
+        configitem.put("dataValue", configstr);
+
+        inputs.put("configure", configitem);
+
+
+        objectList.add(inputs);
+        idcardMap.put("inputs", objectList);
+        RequestBody requestBody;
+
+
+        requestBody = RequestBody.create(MEDIA_TYPE_JSON, gson.toJson(idcardMap, type));
+
+        ConfigRepository.getInstance()
+                .testOcrIdcard(requestBody)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(MainActivity.this.<String>bindToLifecycle())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String testOcrIdcard) {
+                        Log.e("++++++++", "" + testOcrIdcard);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void gettestDriverLicense() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+
+        Map<String, Object> idcardMap = new HashMap<>();
+        List<Object> objectList = new ArrayList<>();
+        Map<String, Object> inputs = new HashMap<>();
+
+        Map<String, Object> imageitem = new HashMap<>();
+        imageitem.put("dataType", 50);
+
+
+        // 对图像进行base64编码
+        String imgBase64 = "";
+        try {
+            File file = new File("/storage/emulated/0/tencent/MicroMsg/WeiXin/mmexport1500360940917.jpg");
+            byte[] content = new byte[(int) file.length()];
+            FileInputStream finputstream = new FileInputStream(file);
+            finputstream.read(content);
+            finputstream.close();
+            imgBase64 = new String(Base64.encode(content, Base64.DEFAULT));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        imageitem.put("dataValue", imgBase64);
+
+        inputs.put("image", imageitem);
+
+
+        objectList.add(inputs);
+        idcardMap.put("inputs", objectList);
+        RequestBody requestBody;
+
+        requestBody = RequestBody.create(MEDIA_TYPE_JSON, gson.toJson(idcardMap, type));
+
+        ConfigRepository.getInstance()
+                .testDriverLicense("http://dm-52.data.aliyun.com/rest/160601/ocr/ocr_driver_license.json", requestBody)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(MainActivity.this.<String>bindToLifecycle())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String testOcrIdcard) {
+                        Log.e("++++++++", "" + testOcrIdcard);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void gettestShopSign() {
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, String>>() {
+        }.getType();
+
+        Map<String, Object> idcardMap = new HashMap<>();
+        List<Object> objectList = new ArrayList<>();
+        Map<String, Object> inputs = new HashMap<>();
+
+        Map<String, Object> imageitem = new HashMap<>();
+        imageitem.put("dataType", 50);
+
+
+        // 对图像进行base64编码
+        String imgBase64 = "";
+        try {
+            File file = new File("/storage/emulated/0/tencent/MicroMsg/WeiXin/mmexport1500363747380.jpg");
+            byte[] content = new byte[(int) file.length()];
+            FileInputStream finputstream = new FileInputStream(file);
+            finputstream.read(content);
+            finputstream.close();
+            imgBase64 = new String(Base64.encode(content, Base64.DEFAULT));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        imageitem.put("dataValue", imgBase64);
+
+        inputs.put("image", imageitem);
+
+
+        objectList.add(inputs);
+        idcardMap.put("inputs", objectList);
+        RequestBody requestBody;
+
+        requestBody = RequestBody.create(MEDIA_TYPE_JSON, gson.toJson(idcardMap, type));
+
+        ConfigRepository.getInstance()
+                .testShopSign("http://dm-54.data.aliyun.com/rest/160601/ocr/ocr_shop_sign.json", requestBody)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(MainActivity.this.<String>bindToLifecycle())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String testOcrIdcard) {
+                        Log.e("++++++++", "" + testOcrIdcard);
                     }
 
                     @Override
