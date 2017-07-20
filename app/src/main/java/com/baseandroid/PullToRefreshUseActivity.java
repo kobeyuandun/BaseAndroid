@@ -17,8 +17,6 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 
-import static com.baseandroid.recycleadpter.BaseRecycleViewAdapter.ALPHAIN;
-
 
 public class PullToRefreshUseActivity extends BaseActivity implements BaseRecycleViewAdapter.OnLoadMoreListener {
 
@@ -103,12 +101,7 @@ public class PullToRefreshUseActivity extends BaseActivity implements BaseRecycl
     private void initAdapter() {
         pullToRefreshAdapter = new PullToRefreshAdapter(PullToRefreshUseActivity.this, DataServer.getSampleData(PAGE_SIZE));
         pullToRefreshAdapter.setOnLoadMoreListener(this, mRecyclerView);
-        pullToRefreshAdapter.openLoadAnimation(ALPHAIN);
-        //pullToRefreshAdapter.setNotDoAnimationCount(3);
-        //pullToRefreshAdapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
-        //        pullToRefreshAdapter.setPreLoadNumber(3);
         mRecyclerView.setAdapter(pullToRefreshAdapter);
-        //mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mCurrentCounter = pullToRefreshAdapter.getData().size();
 
     }

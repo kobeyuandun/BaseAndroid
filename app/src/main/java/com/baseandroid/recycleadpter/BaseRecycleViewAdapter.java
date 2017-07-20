@@ -1,6 +1,5 @@
 package com.baseandroid.recycleadpter;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -12,17 +11,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-
-import com.baseandroid.recycleadpter.animation.AlphaInAnimation;
-import com.baseandroid.recycleadpter.animation.BaseAnimation;
-import com.baseandroid.recycleadpter.animation.ScaleInAnimation;
-import com.baseandroid.recycleadpter.animation.SlideInBottomAnimation;
-import com.baseandroid.recycleadpter.animation.SlideInLeftAnimation;
-import com.baseandroid.recycleadpter.animation.SlideInRightAnimation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -69,13 +59,6 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
     //data
     protected List<T> mData;
     protected Context mContext;
-
-    //animate
-    private boolean mOpenAnimationEnable = false;
-    private Interpolator mInterpolator = new LinearInterpolator();
-    private int mDuration = 300;
-    private int mLastPosition = -1;
-    private BaseAnimation mSelectAnimation = new AlphaInAnimation();
 
     public BaseRecycleViewAdapter(Context context, @Nullable List<T> data) {
         mContext = context;
@@ -266,7 +249,8 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
 
     public void addData(@NonNull Collection<? extends T> newData) {
         mData.addAll(newData);
-        notifyItemRangeInserted(mData.size() - newData.size() + getHeaderLayoutCount(), newData.size());
+        notifyItemRangeInserted(mData.size() - newData.size() + getHeaderLayoutCount(), newData
+                .size());
         compatibilityDataSizeChanged(newData.size());
     }
 
@@ -299,7 +283,6 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
         }
         mData.addAll(data);
         disableLoadMoreIfNotFullPage();
-        mLastPosition = -1;
         notifyDataSetChanged();
     }
 
@@ -653,7 +636,8 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
     }
 
     public void setEmptyView(int layoutResId, ViewGroup viewGroup) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(layoutResId, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext())
+                .inflate(layoutResId, viewGroup, false);
         setEmptyView(view);
     }
 
@@ -745,7 +729,8 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
     }
 
     private ViewHolder getLoadingView(ViewGroup parent) {
-        ViewHolder holder = new DefaultViewHolder(LayoutInflater.from(parent.getContext()).inflate(mLoadMoreView.getLayoutId(), parent, false));
+        ViewHolder holder = new DefaultViewHolder(LayoutInflater.from(parent.getContext())
+                .inflate(mLoadMoreView.getLayoutId(), parent, false));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -768,73 +753,19 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
         notifyItemChanged(getLoadMoreViewPosition());
     }
 
-    public void setNotDoAnimationCount(int count) {
-        mLastPosition = count;
-    }
-
-    public void setDuration(int duration) {
-        mDuration = duration;
-    }
-
-    private void addAnimation(RecyclerView.ViewHolder holder) {
-        if (mOpenAnimationEnable) {
-            if (holder.getLayoutPosition() > mLastPosition) {
-                BaseAnimation animation = null;
-                animation = mSelectAnimation;
-                for (Animator anim : animation.getAnimators(holder.itemView)) {
-                    startAnim(anim, holder.getLayoutPosition());
-                }
-                mLastPosition = holder.getLayoutPosition();
-            }
-        }
-    }
-
-    protected void startAnim(Animator anim, int index) {
-        anim.setDuration(mDuration).start();
-        anim.setInterpolator(mInterpolator);
-    }
-
-    public void openLoadAnimation() {
-        this.mOpenAnimationEnable = true;
-    }
-
-    public void openLoadAnimation(int animationType) {
-        this.mOpenAnimationEnable = true;
-        switch (animationType) {
-            case ALPHAIN:
-                mSelectAnimation = new AlphaInAnimation();
-                break;
-            case SCALEIN:
-                mSelectAnimation = new ScaleInAnimation();
-                break;
-            case SLIDEIN_BOTTOM:
-                mSelectAnimation = new SlideInBottomAnimation();
-                break;
-            case SLIDEIN_LEFT:
-                mSelectAnimation = new SlideInLeftAnimation();
-                break;
-            case SLIDEIN_RIGHT:
-                mSelectAnimation = new SlideInRightAnimation();
-                break;
-            default:
-                break;
-        }
-    }
-
     @Override
     public void onViewAttachedToWindow(ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         int type = holder.getItemViewType();
         if (type == EMPTY_VIEW || type == HEADER_VIEW || type == FOOTER_VIEW || type == LOADING_VIEW) {
             setFullSpan(holder);
-        } else {
-            addAnimation(holder);
         }
     }
 
     protected void setFullSpan(ViewHolder holder) {
         if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
-            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) holder.itemView
+                    .getLayoutParams();
             params.setFullSpan(true);
         }
     }
@@ -858,7 +789,8 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
                     if (mSpanSizeLookup == null) {
                         return isFixedViewType(type) ? gridManager.getSpanCount() : 1;
                     } else {
-                        return (isFixedViewType(type)) ? gridManager.getSpanCount() : mSpanSizeLookup.getSpanSize(gridManager, position - getHeaderLayoutCount());
+                        return (isFixedViewType(type)) ? gridManager.getSpanCount() : mSpanSizeLookup
+                                .getSpanSize(gridManager, position - getHeaderLayoutCount());
                     }
                 }
 

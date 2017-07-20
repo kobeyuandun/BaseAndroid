@@ -550,7 +550,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         inputs.put("image", imageitem);
 
-
         objectList.add(inputs);
         idcardMap.put("inputs", objectList);
         RequestBody requestBody;
