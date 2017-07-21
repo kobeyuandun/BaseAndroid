@@ -3,7 +3,6 @@ package com.baseandroid.recycleadpter;
 import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -60,9 +59,9 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
     protected List<T> mData;
     protected Context mContext;
 
-    public BaseRecycleViewAdapter(Context context, @Nullable List<T> data) {
+    public BaseRecycleViewAdapter(Context context) {
         mContext = context;
-        mData = data == null ? new ArrayList<T>() : data;
+        mData = new ArrayList<T>();
     }
 
     private void checkNotNull() {
@@ -280,9 +279,9 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
             mLoadMoreEnable = true;
             mLoading = false;
             mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_DEFAULT);
+            disableLoadMoreIfNotFullPage();
         }
         mData.addAll(data);
-        disableLoadMoreIfNotFullPage();
         notifyDataSetChanged();
     }
 

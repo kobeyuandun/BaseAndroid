@@ -51,6 +51,7 @@ public class PullToRefreshUseActivity extends BaseActivity implements BaseRecycl
                 frame.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        //下拉刷新时，不加载更多
                         pullToRefreshAdapter.setEnableLoadMore(false);
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -65,8 +66,9 @@ public class PullToRefreshUseActivity extends BaseActivity implements BaseRecycl
                 }, 2000);
             }
         });
-        //默认
-        //ptr_fresh_layout_id.setLastUpdateTimeRelateObject(this);
+        //显示刷新时间
+        ptr_fresh_layout_id.setLastUpdateTimeRelateObject(this);
+
         //自定义
         CustomPtrHeader customPtrHeader = new CustomPtrHeader(PullToRefreshUseActivity.this);
         ptr_fresh_layout_id.setHeaderView(customPtrHeader);
@@ -84,7 +86,8 @@ public class PullToRefreshUseActivity extends BaseActivity implements BaseRecycl
     }
 
     private void addHeadView() {
-        View headView = getLayoutInflater().inflate(R.layout.head_view, (ViewGroup) mRecyclerView.getParent(), false);
+        View headView = getLayoutInflater().inflate(R.layout.head_view, (ViewGroup) mRecyclerView
+                .getParent(), false);
         headView.findViewById(R.id.iv).setVisibility(View.GONE);
         ((TextView) headView.findViewById(R.id.tv)).setText("change load view");
         headView.setOnClickListener(new View.OnClickListener() {
@@ -92,44 +95,44 @@ public class PullToRefreshUseActivity extends BaseActivity implements BaseRecycl
             public void onClick(View v) {
                 mLoadMoreEndGone = true;
                 mRecyclerView.setAdapter(pullToRefreshAdapter);
-                Toast.makeText(PullToRefreshUseActivity.this, "change complete", Toast.LENGTH_LONG).show();
+                Toast.makeText(PullToRefreshUseActivity.this, "change complete", Toast.LENGTH_LONG)
+                        .show();
             }
         });
         pullToRefreshAdapter.addHeaderView(headView);
     }
 
     private void initAdapter() {
-        pullToRefreshAdapter = new PullToRefreshAdapter(PullToRefreshUseActivity.this, DataServer.getSampleData(PAGE_SIZE));
+        pullToRefreshAdapter = new PullToRefreshAdapter(PullToRefreshUseActivity.this);
+        pullToRefreshAdapter.addData(DataServer.getSampleData(PAGE_SIZE));
         pullToRefreshAdapter.setOnLoadMoreListener(this, mRecyclerView);
         mRecyclerView.setAdapter(pullToRefreshAdapter);
         mCurrentCounter = pullToRefreshAdapter.getData().size();
-
     }
 
     @Override
     public void onLoadMore() {
-        if (pullToRefreshAdapter.getData().size() < PAGE_SIZE) {
-            pullToRefreshAdapter.loadMoreEnd(false);
+        ptr_fresh_layout_id.setEnabled(false);
+        if (mCurrentCounter >= TOTAL_COUNTER) {
+            //                    pullToRefreshAdapter.loadMoreEnd();//default visible
+            pullToRefreshAdapter.loadMoreEnd(false);//true is gone,false is visible
         } else {
-            if (mCurrentCounter >= TOTAL_COUNTER) {
-                //                    pullToRefreshAdapter.loadMoreEnd();//default visible
-                pullToRefreshAdapter.loadMoreEnd(false);//true is gone,false is visible
+            if (isErr) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        pullToRefreshAdapter.addData(DataServer.getSampleData(PAGE_SIZE));
+                        mCurrentCounter = pullToRefreshAdapter.getData().size();
+                        pullToRefreshAdapter.loadMoreComplete();
+                        ptr_fresh_layout_id.setEnabled(true);
+                    }
+                }, 1000);
             } else {
-                if (isErr) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            pullToRefreshAdapter.addData(DataServer.getSampleData(PAGE_SIZE));
-                            mCurrentCounter = pullToRefreshAdapter.getData().size();
-                            pullToRefreshAdapter.loadMoreComplete();
-                        }
-                    }, 1000);
-                } else {
-                    isErr = true;
-                    pullToRefreshAdapter.loadMoreFail();
-
-                }
+                isErr = true;
+                pullToRefreshAdapter.loadMoreFail();
+                ptr_fresh_layout_id.setEnabled(true);
             }
         }
+
     }
 }

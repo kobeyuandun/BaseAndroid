@@ -1,7 +1,6 @@
 package com.baseandroid;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
@@ -15,11 +14,9 @@ import com.baseandroid.recycleadpter.BaseRecycleViewAdapter;
 import com.baseandroid.utils.SpannableStringUtils;
 import com.baseandroid.utils.ToastUtils;
 
-import java.util.List;
-
 public class PullToRefreshAdapter extends BaseRecycleViewAdapter<Status> {
-    public PullToRefreshAdapter(Context context, @Nullable List<Status> data) {
-        super(context, data);
+    public PullToRefreshAdapter(Context context) {
+        super(context);
     }
 
     public class PtrViewHolder extends RecyclerView.ViewHolder {
