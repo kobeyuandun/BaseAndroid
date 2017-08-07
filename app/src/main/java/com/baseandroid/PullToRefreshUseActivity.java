@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baseandroid.base.BaseActivity;
-import com.baseandroid.recycleadpter.BaseRecycleViewAdapter;
+import com.baseandroid.widget.recycleadpter.BaseRecycleViewAdapter;
 
 import butterknife.BindView;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;

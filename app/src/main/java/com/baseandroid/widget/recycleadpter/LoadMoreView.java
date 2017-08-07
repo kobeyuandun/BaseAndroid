@@ -1,4 +1,4 @@
-package com.baseandroid.recycleadpter;
+package com.baseandroid.widget.recycleadpter;
 
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;

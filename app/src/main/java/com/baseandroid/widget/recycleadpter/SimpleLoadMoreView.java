@@ -1,4 +1,4 @@
-package com.baseandroid.recycleadpter;
+package com.baseandroid.widget.recycleadpter;
 
 import com.baseandroid.R;
 

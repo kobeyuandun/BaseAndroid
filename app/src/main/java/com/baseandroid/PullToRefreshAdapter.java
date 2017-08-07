@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.baseandroid.config.Global;
-import com.baseandroid.recycleadpter.BaseRecycleViewAdapter;
+import com.baseandroid.widget.recycleadpter.BaseRecycleViewAdapter;
 import com.baseandroid.utils.SpannableStringUtils;
 import com.baseandroid.utils.ToastUtils;
 

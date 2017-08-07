@@ -5,6 +5,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.photocameralib.media.ImageGalleryActivity;
@@ -65,6 +66,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @BindView(R.id.test_id8)
     Button test_id8;
 
+    @BindView(R.id.test_id9)
+    ImageView test_id9;
+
 
     @Override
     protected int getLayoutId() {
@@ -80,12 +84,122 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         test_id6.setOnClickListener(this);
         test_id7.setOnClickListener(this);
         test_id8.setOnClickListener(this);
+        test_id9.setOnClickListener(this);
+    }
+
+    public static void measureView(View view) {
+        if (view == null) {
+            return;
+        }
+        int nWidth = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        int nHeight = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+        view.measure(nWidth, nHeight);
     }
 
     @Override
     protected void setupData(Bundle savedInstanceState) {
         //checkUpdate();
         //addVisit();
+
+
+        Log.e("++++++", "=====result 1 ====" + calday(1040, 9, 2));
+        Log.e("++++++", "=====result 2 ====" + toJulianDate(1040, 9, 2, 12, 0, 0, 0));
+    }
+
+    int calday(int year, int month, int day) {
+
+        int a = (14 - month) / 12;
+        int y = year + 4800 - a;
+        int m = month + 12 * a - 3;
+
+        int result = day + (153 * m + 3) / 5 + y * 365 + y / 4 - y / 100 + y / 400 - 32045;
+        return result;
+    }
+
+    int calday2(int year, int month, int day) {
+
+        int a = (14 - month) / 12;
+        int y = year + 4800 - a;
+        int m = month + 12 * a - 3;
+
+        int result = day + (153 * m + 3) / 5 + y * 365 + y / 4 - 32083;
+        return result;
+    }
+
+    public static int dayOfYear(int year, int month, int day) {
+        int day_of_year;
+        if (isLeapYear(year)) {
+            day_of_year = ((275 * month) / 9) - ((month + 9) / 12) + day - 30;
+        } else {
+            day_of_year = ((275 * month) / 9) - (((month + 9) / 12) << 1) + day - 30;
+        }
+        return day_of_year;
+    }
+
+    public static double toJulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond) {
+
+        // month range fix
+        if ((month > 12) || (month < -12)) {
+            month--;
+            int delta = month / 12;
+            year += delta;
+            month -= delta * 12;
+            month++;
+        }
+        if (month < 0) {
+            year--;
+            month += 12;
+        }
+
+        // decimal day fraction
+        double frac = (hour / 24.0) + (minute / 1440.0) + (second / 86400.0) + (millisecond / 86400000.0);
+        if (frac < 0) {        // negative time fix
+            int delta = ((int) (-frac)) + 1;
+            frac += delta;
+            day -= delta;
+        }
+        //double gyr = year + (0.01 * month) + (0.0001 * day) + (0.0001 * frac) + 1.0e-9;
+        double gyr = year + (0.01 * month) + (0.0001 * (day + frac)) + 1.0e-9;
+
+        // conversion factors
+        int iy0;
+        int im0;
+        if (month <= 2) {
+            iy0 = year - 1;
+            im0 = month + 12;
+        } else {
+            iy0 = year;
+            im0 = month;
+        }
+        int ia = iy0 / 100;
+        int ib = 2 - ia + (ia >> 2);
+
+        // calculate julian date
+        int jd;
+        if (year <= 0) {
+            jd = (int) ((365.25 * iy0) - 0.75) + (int) (30.6001 * (im0 + 1)) + day + 1720994;
+        } else {
+            jd = (int) (365.25 * iy0) + (int) (30.6001 * (im0 + 1)) + day + 1720994;
+        }
+        if (gyr >= 1582.1015) {                        // on or after 15 October 1582
+            jd += ib;
+            Log.e("++++++++++++", "ib = " + ib);
+        }
+
+        return jd + frac + 0.5;
+
+    }
+
+
+    public static boolean isLeapYear(int y) {
+        boolean result = false;
+        if (((y % 4) == 0) &&            // must be divisible by 4...
+                ((y < 1582) ||                // and either before reform year...
+                        ((y % 100) != 0) ||        // or not a century...
+                        ((y % 400) == 0))) {        // or a multiple of 400...
+            result = true;            // for leap year.
+        }
+        return result;
     }
 
     @Override
@@ -97,6 +211,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 //gettestOcrIdcard();
                 //gettestDriverLicense();
                 gettestShopSign();
+
+
                 break;
 
             case R.id.test_id2:
@@ -144,6 +260,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                             }
                         })
                         .build(), SelectImageCustomActivit.class);
+                break;
+
+            case R.id.test_id9:
+
                 break;
 
             default:
