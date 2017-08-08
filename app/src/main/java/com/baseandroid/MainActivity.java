@@ -1,5 +1,6 @@
 package com.baseandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -224,7 +225,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.test_id4:
-                accessNextPage(PullToRefreshUseActivity.class);
+                startActivity(new Intent(this, PullToRefreshUseActivity.class));
                 break;
 
             case R.id.test_id6:

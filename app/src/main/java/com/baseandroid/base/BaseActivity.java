@@ -12,8 +12,6 @@ import com.jaeger.library.StatusBarUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.Map;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -46,37 +44,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-    }
-
-    public void accessNextPage(Class<?> name) {
-        Intent intent = new Intent(this, name);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-    }
-
-    public void accessNextPage(Map<String, Object> map, Class<?> name) {
-        Intent intent = new Intent(this, name);
-        BaseMapParcelable hmp = new BaseMapParcelable();
-        hmp.setParcelMap(map);
-        intent.putExtra(BaseMapParcelable.INTENTTAG, hmp);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
-    }
-
-    public void accessNextPageForResult(Class<?> name, int requestCode) {
-        Intent intent = new Intent(this, name);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, requestCode);
-    }
-
-    public void accessNextPageForResult(Map<String, Object> map, Class<?> name, int
-            requestCode) {
-        Intent intent = new Intent(this, name);
-        BaseMapParcelable hmp = new BaseMapParcelable();
-        hmp.setParcelMap(map);
-        intent.putExtra(BaseMapParcelable.INTENTTAG, hmp);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivityForResult(intent, requestCode);
     }
 
     @Override

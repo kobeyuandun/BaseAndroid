@@ -1,6 +1,7 @@
 package com.baseandroid.base;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.jayfeng.lesscode.core.DisplayLess;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -39,9 +42,23 @@ public abstract class BaseDialog extends DialogFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        getDialog().getWindow()
+                .setBackgroundDrawableResource(android.R.color.transparent);
+        getDialog().getWindow().getDecorView().setBackgroundColor(Color.TRANSPARENT);
+        getDialog().getWindow()
+                .getDecorView()
+                .setPadding(DisplayLess.$dp2px(4), DisplayLess.$dp2px(4), DisplayLess.$dp2px(4), DisplayLess
+                        .$dp2px(4));
         if (mGravity != Gravity.CENTER) {
             WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
             params.gravity = mGravity;
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
+        } else {
+            WindowManager.LayoutParams params = getDialog().getWindow().getAttributes();
+            params.width = WindowManager.LayoutParams.MATCH_PARENT;
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT;
             getDialog().getWindow().setAttributes((WindowManager.LayoutParams) params);
         }
         super.onActivityCreated(savedInstanceState);

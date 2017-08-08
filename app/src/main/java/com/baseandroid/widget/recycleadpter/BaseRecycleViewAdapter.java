@@ -24,13 +24,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
 
-    //animate support
-    public static final int ALPHAIN = 0x00000001;
-    public static final int SCALEIN = 0x00000002;
-    public static final int SLIDEIN_BOTTOM = 0x00000003;
-    public static final int SLIDEIN_LEFT = 0x00000004;
-    public static final int SLIDEIN_RIGHT = 0x00000005;
-
     public static final int HEADER_VIEW = 0x00000111;
     public static final int LOADING_VIEW = 0x00000222;
     public static final int FOOTER_VIEW = 0x00000333;
