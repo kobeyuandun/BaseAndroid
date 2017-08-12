@@ -764,6 +764,9 @@ public abstract class BaseRecycleViewAdapter<T> extends RecyclerView.Adapter {
 
     @Override
     public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        if (getRecyclerView() == null) {
+            setRecyclerView(recyclerView);
+        }
         super.onAttachedToRecyclerView(recyclerView);
         LayoutManager manager = recyclerView.getLayoutManager();
         if (manager instanceof GridLayoutManager) {
