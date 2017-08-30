@@ -211,8 +211,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 //getServerTime();
                 //gettestOcrIdcard();
                 //gettestDriverLicense();
-                gettestShopSign();
-
+                //gettestShopSign();
+                checkUpdate();
 
                 break;
 

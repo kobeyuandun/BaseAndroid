@@ -110,6 +110,10 @@ public void *(***);
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 
+# Rxcache
+-dontwarn io.rx_cache.internal.**
+-keepclassmembers enum io.rx_cache.Source { *; }
+
 # persistentcookiejar
 -dontwarn com.franmontiel.persistentcookiejar.**
 -keep class com.franmontiel.persistentcookiejar.**
