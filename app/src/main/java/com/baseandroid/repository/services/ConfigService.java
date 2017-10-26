@@ -10,12 +10,17 @@ import com.baseandroid.repository.json.UserTokenInfo;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -48,9 +53,14 @@ public interface ConfigService {
     Observable<String> testOcrIdcard(@Body RequestBody body);
 
     @POST
-    Observable<String> testDriverLicense(@Url String url,@Body RequestBody body);
+    Observable<String> testDriverLicense(@Url String url, @Body RequestBody body);
 
     @POST
-    Observable<String> testShopSign(@Url String url,@Body RequestBody body);
+    Observable<String> testShopSign(@Url String url, @Body RequestBody body);
+
+
+    @Multipart
+    @POST("file/upload.do")
+    Observable<ResponseBody> uploadFileWithPartMap(@PartMap() Map<String, RequestBody> partMap, @Part MultipartBody.Part file);
 
 }

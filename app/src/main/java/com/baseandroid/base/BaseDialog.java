@@ -84,7 +84,6 @@ public abstract class BaseDialog extends DialogFragment {
         }
         ft.add(this, tag);
         ft.commitAllowingStateLoss();
-
     }
 
     @Override

@@ -9,8 +9,8 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.baseandroid.R;
 import com.jayfeng.lesscode.core.DisplayLess;
-import com.qianbao.qianbaobusiness.R;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 public class EditTextWithDelete extends MaterialEditText {

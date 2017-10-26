@@ -48,4 +48,10 @@ public class RetrofitManager {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
+
+    public static Retrofit getRxRetrofitLife() {
+        return buildBaseRetrofitAli().baseUrl("http://s.qianbaocard.com/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
 }

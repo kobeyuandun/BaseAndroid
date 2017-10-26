@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="EditTextWithDelete">
+        <attr name="del_icon" format="reference"/>
+    </declare-styleable>
+
+</resources>

@@ -45,6 +45,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -103,7 +104,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         //addVisit();
 
 
-        Log.e("++++++", "=====result 1 ====" + calday(1040, 9, 2));
+        Log.e("++++++", "=====result 1 ====" + calday(200, 3, 1));//87,11,24
+        Log.e("++++++", "=====result 111 ====" + calday2(200, 3, 1));
         Log.e("++++++", "=====result 2 ====" + toJulianDate(1040, 9, 2, 12, 0, 0, 0));
     }
 
@@ -212,7 +214,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 //gettestOcrIdcard();
                 //gettestDriverLicense();
                 //gettestShopSign();
-                checkUpdate();
+                //checkUpdate();
+
+                uploadfile();
 
                 break;
 
@@ -270,6 +274,46 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             default:
                 break;
         }
+    }
+
+
+    private void uploadfile() {
+
+        Map<String, String> hasMap = new HashMap<>();
+        String filepath = "/storage/emulated/0/tencent/MicroMsg/WeiXin/mmexport1500360940917.jpg";
+        ConfigRepository.getInstance()
+                .uploadFileWithPartMap(hasMap, "file", filepath)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(MainActivity.this.<ResponseBody>bindToLifecycle())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull ResponseBody responseBody) {
+                        try {
+                            String repone = responseBody.string();
+                            Log.e("=========", "repone = " + repone);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("=========", "Throwable = " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
     }
 
     private void getServerTime() {

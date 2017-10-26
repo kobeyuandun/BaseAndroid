@@ -4,6 +4,7 @@ apply plugin: 'com.jakewharton.hugo'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+    flavorDimensions rootProject.ext.versionName
     defaultConfig {
         applicationId "com.baseandroid"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -70,10 +71,10 @@ android {
 
     // rename the apk with the version name
     applicationVariants.all { variant ->
-        variant.outputs.each { output ->
+        variant.outputs.all { output ->
             String productFlavor = variant.productFlavors[0].name
             String fileName = "${productFlavor}-${variant.buildType.name}-${variant.versionName}-${variant.versionCode}.apk".toLowerCase()
-            output.outputFile = new File(output.outputFile.parent + "/${variant.buildType.name}", fileName)
+            outputFileName = new File(fileName)
         }
     }
 
@@ -94,6 +95,7 @@ repositories{
     flatDir{
         dirs 'libs'
     }
+    google()
 }
 
 dependencies {

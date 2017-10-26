@@ -21,7 +21,7 @@ import com.amap.api.services.geocoder.GeocodeSearch;
 import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.baseandroid.config.Global;
-import com.qianbao.qianbaobusiness.repository.json.MyLocation;
+import com.baseandroid.repository.json.MyLocation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -169,7 +169,7 @@ public class GaoDeMap {
         myLocation.setAddress(amapLocation.getAddress());
         myLocation.setProvinceName(amapLocation.getProvince());
         myLocation.setCityName(amapLocation.getCity());
-        Global.setMyLocation(myLocation);
+        //Global.setMyLocation(myLocation);
 
         Log.e("GaodeMap", "type = " + amapLocation.getLocationType());//获取当前定位结果来源,如网络定位结果.
         Log.e("GaodeMap", "latitude=" + amapLocation.getLatitude());//获取纬度
