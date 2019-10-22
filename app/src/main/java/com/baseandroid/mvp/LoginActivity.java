@@ -6,7 +6,9 @@ import com.baseandroid.base.BaseActivity;
 
 import java.util.List;
 
-
+/**
+ * 登录页
+ */
 public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private LoginContract.Presenter mPresenter;
